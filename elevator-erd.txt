@@ -1,0 +1,111 @@
+
+// BUILDINGS
+buildings [icon: building, color: blue] {
+  building_id int pk
+  name string
+  location string
+  total_floors int
+}
+
+// FLOORS
+floors [icon: layers, color: blue] {
+  floor_id int pk
+  building_id int
+  floor_number int
+}
+
+// ELEVATOR SHAFTS
+shafts [icon: columns, color: purple] {
+  shaft_id int pk
+  building_id int
+  shaft_number string
+}
+
+// ELEVATORS
+elevators [icon: move-vertical, color: purple] {
+  elevator_id int pk
+  building_id int
+  shaft_id int
+  elevator_number string
+  capacity int
+}
+
+// ELEVATOR FLOOR ACCESS
+elevator_floors [icon: grid, color: purple] {
+  id int pk
+  elevator_id int
+  floor_id int
+}
+
+// FLOOR REQUESTS
+
+requests [icon: arrow-up-circle, color: green] {
+  request_id int pk
+  building_id int
+  source_floor_id int
+  destination_floor_id int
+  direction string
+  requested_at timestamp
+  status string
+}
+
+// RIDE ASSIGNMENTS
+
+ride_assignments [icon: link, color: green] {
+  assignment_id int pk
+  request_id int
+  elevator_id int
+  assigned_at timestamp
+}
+
+// RIDE LOGS
+ride_logs [icon: activity, color: green] {
+  ride_id int pk
+  elevator_id int
+  request_id int
+  start_time timestamp
+  end_time timestamp
+  status string
+}
+
+// ELEVATOR STATUS
+elevator_status [icon: toggle-right, color: orange] {
+  status_id int pk
+  elevator_id int
+  status string
+  updated_at timestamp
+}
+
+// MAINTENANCE
+maintenance [icon: tool, color: red] {
+  maintenance_id int pk
+  elevator_id int
+  issue string
+  status string
+  started_at timestamp
+  completed_at timestamp
+}
+
+// RELATIONSHIPS
+
+buildings.building_id > floors.building_id
+buildings.building_id > shafts.building_id
+buildings.building_id > elevators.building_id
+
+shafts.shaft_id > elevators.shaft_id
+
+elevators.elevator_id > elevator_floors.elevator_id
+floors.floor_id > elevator_floors.floor_id
+
+floors.floor_id > requests.source_floor_id
+floors.floor_id > requests.destination_floor_id
+buildings.building_id > requests.building_id
+
+requests.request_id > ride_assignments.request_id
+elevators.elevator_id > ride_assignments.elevator_id
+
+requests.request_id > ride_logs.request_id
+elevators.elevator_id > ride_logs.elevator_id
+
+elevators.elevator_id > elevator_status.elevator_id
+elevators.elevator_id > maintenance.elevator_id
