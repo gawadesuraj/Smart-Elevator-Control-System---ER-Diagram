@@ -206,7 +206,7 @@ smart-elevator-erd
 │
 ├── README.md
 ├── elevator-erd.txt
-└── diagram.png
+└── diagram.svg
 
 ---
 
